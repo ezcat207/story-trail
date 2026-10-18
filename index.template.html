@@ -53,6 +53,7 @@ label.chk{display:flex;gap:8px;align-items:center;margin-top:8px;font-weight:700
 input[type=checkbox]{width:20px;height:20px}
 footer{margin:28px 0 12px;font-size:.82rem;color:var(--mute);border-top:1px solid var(--line);padding-top:12px}
 .hide{display:none}
+.guide h1{font-size:1.4rem;margin:.2em 0}.guide em{color:var(--mute)}.guide blockquote{border-left:4px solid var(--line);margin:8px 0;padding:2px 12px;background:var(--paper)}.guide li{margin:3px 0}
 </style>
 </head>
 <body>
@@ -69,13 +70,16 @@ footer{margin:28px 0 12px;font-size:.82rem;color:var(--mute);border-top:1px soli
 <nav class="tabs" id="tabs"></nav>
 <main id="main"></main>
 <footer id="foot"></footer>
+<footer class="small">Full source text of the book lives in a private repo. <a href="https://github.com/ezcat207/story-trail-source">story-trail-source</a> (private — ask the owner, <a href="https://github.com/ezcat207">@ezcat207</a>, for access).</footer>
 </div>
 
 <script>
 const PROMPT={en:__PROMPT_EN__,zh:__PROMPT_ZH__};
+const GUIDE=__GUIDE__;
+let gsel=0;
 const UI={
  en:{h1:"Story Trail",sub:"A map from a first spark to a finished short story. Walk it station by station. Use any story you love as your practice map.",
-  tabs:{map:"🗺 Map",pj:"⚡ Percy Jackson Case",score:"🏆 Score My Story",tools:"🧰 Toolbox"},
+  tabs:{map:"🗺 Map",guide:"📖 Field Guide",pj:"⚡ Percy Jackson Case",score:"🏆 Score My Story",tools:"🧰 Toolbox"},
   prog:(n,t)=>`${n} of ${t} stations walked`,done:"I walked this station",
   k:{an:"Think of it like…",ru:"The rule in plain words",pj:"Case study: Percy Jackson",tr:"Try it (20 minutes)",mi:"Common trap",ck:"Checklist"},
   pjIntro:"Every station has a Percy Jackson example, taken from The Lightning Thief (Rick Riordan). Spoilers ahead. Plot details were written from memory and public summaries; check them against your own copy.",
@@ -89,7 +93,7 @@ const UI={
   toolsTitle:"Toolbox",
   foot:"Inspired by the craft ideas in 《让写作成为你的副业：短篇故事创作及变现攻略》 by 北海 (开明出版社, 2025). This page is an original rewrite for young writers, with its own examples and wording. It leaves out the book’s market and income chapters. If you want the full book, please buy it. Percy Jackson is a trademark of its owners; this page is an educational study. Example lines marked “imitation” are written by us."},
  zh:{h1:"故事之路",sub:"一张从第一个火花到写完一篇短篇小说的地图。一站一站往前走，也可以拿你最爱的故事来对照练习。",
-  tabs:{map:"🗺 地图",pj:"⚡ 《波西·杰克逊》案例",score:"🏆 给我的故事打分",tools:"🧰 工具箱"},
+  tabs:{map:"🗺 地图",guide:"📖 完整指南",pj:"⚡ 《波西·杰克逊》案例",score:"🏆 给我的故事打分",tools:"🧰 工具箱"},
   prog:(n,t)=>`已走完 ${n} / ${t} 站`,done:"这一站我走完了",
   k:{an:"可以这样想……",ru:"白话规则",pj:"案例：波西·杰克逊",tr:"动手试一试（20 分钟）",mi:"常见的坑",ck:"检查清单"},
   pjIntro:"每一站都配了《波西·杰克逊：神火之贼》（雷克·莱尔顿）的例子。有剧透。情节是凭记忆和公开简介写的，请对照你自己的书核对。",
@@ -307,6 +311,11 @@ function render(){
      <div class="row"><b class="k">${u.k.ck}</b>${c.ck.map(x=>"☐ "+esc(x)).join("<br>")}</div>
      <label class="chk"><input type="checkbox" id="dn" ${done[s.id]?"checked":""}> ${u.done}</label>
      <p class="small">${esc(u.pjIntro)}</p></div>`;
+  } else if(tab==="guide"){
+    h+=`<div class="card"><h2>📖 Field Guide</h2><p class="small">${lang==="zh"?"完整指南目前只有英文版（面向 13 岁以上的美国读者），全部是原创改写。":"The full guide: 15 short chapters in plain English for writers 13+. Pick any chapter. Each ends with a 20-minute task."}</p>
+     <div class="copyrow">`+GUIDE.map((g,i)=>`<button data-g="${i}" class="${i===gsel?"on":""}">${i+1}</button>`).join("")+`</div>
+     <div class="guide">${GUIDE[gsel].html}</div>
+     <div class="copyrow"><button data-g="${Math.max(0,gsel-1)}">← Prev</button><button data-g="${Math.min(GUIDE.length-1,gsel+1)}">Next →</button></div></div>`;
   } else if(tab==="pj"){
     h+=`<div class="card"><h2>${u.pjTitle}</h2><p>${esc(u.pjLead)}</p><p class="spoil">Spoilers · 剧透</p>
      <table><tr><th>${u.pjCols[0]}</th><th>${u.pjCols[1]}</th></tr>${PJ[lang].map((t,i)=>`<tr><td>${i} · ${esc(S[i][lang].t)}</td><td>${esc(t)}</td></tr>`).join("")}</table>
@@ -323,6 +332,7 @@ function render(){
   $("#main").innerHTML=h; $("#foot").textContent=u.foot;
   document.querySelectorAll("[data-tab]").forEach(b=>b.onclick=()=>{tab=b.dataset.tab;render();scrollTo(0,0)});
   document.querySelectorAll("[data-sel]").forEach(b=>b.onclick=()=>{sel=+b.dataset.sel;render();document.getElementById("detail").scrollIntoView({behavior:"smooth"})});
+  document.querySelectorAll("[data-g]").forEach(b=>b.onclick=()=>{gsel=+b.dataset.g;render();scrollTo(0,0)});
   const dn=$("#dn"); if(dn)dn.onchange=()=>{done[sel]=dn.checked;save();render()};
   const cp=$("#cp"); if(cp)cp.onclick=()=>copy(PROMPT[lang],cp);
   document.querySelectorAll("[data-tcopy]").forEach(b=>b.onclick=()=>copy(TOOLS[lang][+b.dataset.tcopy][1],b));

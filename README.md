@@ -16,3 +16,7 @@ A free, single-page map for teen writers (13+): twelve stations that take you fr
 
 ## License
 Content and code: CC BY-SA 4.0 (attribution + share-alike), except for third-party titles and trademarks, which belong to their owners.
+
+## Field Guide & full source
+- The **Field Guide** tab holds 15 short chapters in plain English for writers 13+ (original writing, source in `guide/`).
+- The converted text of the source book is kept in a **private** repo, `ezcat207/story-trail-source`. Ask the owner for access.
