@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Story Trail · From a spark to a finished short story</title>
+<meta name="description" content="A map for teen writers: 12 stations from a first idea to a finished short story, a Percy Jackson case study, and a copy-paste AI scoring prompt.">
+<style>
+:root{--bg:#f4ecd8;--paper:#fbf6e8;--ink:#2b2418;--mute:#6f6350;--line:#c9b98f;--acc:#b5532a;--acc2:#2f6f5e;--gold:#d9a521;--card:#fffaf0;--code:#efe6cc}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#17140f;--paper:#201b13;--ink:#f1e9d3;--mute:#a79c82;--line:#4a3f2a;--acc:#e08a5c;--acc2:#6fc2a9;--gold:#f0c24a;--card:#262015;--code:#2d2618}}
+:root[data-theme=dark]{--bg:#17140f;--paper:#201b13;--ink:#f1e9d3;--mute:#a79c82;--line:#4a3f2a;--acc:#e08a5c;--acc2:#6fc2a9;--gold:#f0c24a;--card:#262015;--code:#2d2618}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.65 Georgia,"Songti SC","Noto Serif SC",serif}
+.wrap{max-width:900px;margin:0 auto;padding:16px}
+header{text-align:center;padding:18px 0 8px}
+h1{margin:0;font-size:2rem;letter-spacing:.02em}
+.sub{color:var(--mute);margin:4px 0 12px}
+.bar{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:10px 0}
+button,.tabbtn{font:inherit;font-size:.92rem;cursor:pointer;border:2px solid var(--line);background:var(--paper);color:var(--ink);padding:6px 14px;border-radius:999px}
+button.on{background:var(--acc);border-color:var(--acc);color:#fff}
+button:hover{border-color:var(--acc)}
+nav.tabs{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;border-bottom:2px solid var(--line);padding-bottom:10px;margin-bottom:14px}
+.prog{height:10px;background:var(--code);border-radius:99px;overflow:hidden;margin:6px 0}
+.prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--acc2),var(--gold));transition:width .3s}
+.small{font-size:.85rem;color:var(--mute)}
+.card{background:var(--card);border:2px solid var(--line);border-radius:14px;padding:14px 16px;margin:12px 0}
+/* trail */
+.trail{position:relative;margin:18px 0;padding:6px 0}
+.trail::before{content:"";position:absolute;left:50%;top:0;bottom:0;border-left:4px dashed var(--line);transform:translateX(-50%)}
+.st{position:relative;display:flex;margin:14px 0}
+.st:nth-child(odd){justify-content:flex-start}.st:nth-child(even){justify-content:flex-end}
+.node{width:46%;text-align:left;border-radius:14px;padding:10px 12px;background:var(--card);border:2px solid var(--line);display:block}
+.node.sel{border-color:var(--acc);box-shadow:0 0 0 3px color-mix(in srgb,var(--acc) 25%,transparent)}
+.node.done{border-color:var(--acc2)}
+.node .n{display:inline-block;min-width:26px;height:26px;line-height:26px;text-align:center;border-radius:50%;background:var(--acc);color:#fff;font-weight:700;margin-right:6px;font-size:.9rem}
+.node.done .n{background:var(--acc2)}
+.node b{font-size:1.02rem}.node span.t{display:block;color:var(--mute);font-size:.85rem;margin-top:2px}
+.st::after{content:"";position:absolute;left:50%;top:22px;width:16px;height:16px;border-radius:50%;background:var(--gold);border:3px solid var(--bg);transform:translateX(-50%)}
+@media(max-width:620px){.trail::before{left:12px}.st,.st:nth-child(even){justify-content:flex-start;padding-left:34px}.node{width:100%}.st::after{left:12px}}
+/* detail */
+.detail h2{margin:0 0 4px;font-size:1.5rem}
+.row{margin:10px 0;padding:10px 12px;background:var(--paper);border-left:5px solid var(--line);border-radius:8px}
+.row b.k{display:block;font-size:.76rem;letter-spacing:.07em;text-transform:uppercase;color:var(--mute);margin-bottom:2px}
+.row.an{border-color:var(--gold)}.row.ru{border-color:var(--acc2)}.row.pj{border-color:var(--acc)}.row.tr{border-color:#6a5acd}.row.mi{border-color:#b33}
+.row ul{margin:4px 0 0 18px;padding:0}
+.spoil{font-size:.8rem;color:var(--acc);font-weight:700}
+table{border-collapse:collapse;width:100%;font-size:.93rem;margin:8px 0}
+th,td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+th{background:var(--code)}
+pre{background:var(--code);border:1px solid var(--line);border-radius:10px;padding:12px;overflow:auto;white-space:pre-wrap;word-break:break-word;font:13px/1.5 ui-monospace,Menlo,monospace;max-height:420px}
+.copyrow{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+label.chk{display:flex;gap:8px;align-items:center;margin-top:8px;font-weight:700;cursor:pointer}
+input[type=checkbox]{width:20px;height:20px}
+footer{margin:28px 0 12px;font-size:.82rem;color:var(--mute);border-top:1px solid var(--line);padding-top:12px}
+.hide{display:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1 id="h1"></h1>
+  <p class="sub" id="sub"></p>
+  <div class="bar">
+    <button data-lang="en">English</button><button data-lang="zh">中文</button>
+    <button id="theme">◐</button>
+  </div>
+  <div class="prog"><i id="pb"></i></div><div class="small" id="pt"></div>
+</header>
+<nav class="tabs" id="tabs"></nav>
+<main id="main"></main>
+<footer id="foot"></footer>
+</div>
+
+<script>
+const PROMPT={en:__PROMPT_EN__,zh:__PROMPT_ZH__};
+const UI={
+ en:{h1:"Story Trail",sub:"A map from a first spark to a finished short story. Walk it station by station. Use any story you love as your practice map.",
+  tabs:{map:"🗺 Map",pj:"⚡ Percy Jackson Case",score:"🏆 Score My Story",tools:"🧰 Toolbox"},
+  prog:(n,t)=>`${n} of ${t} stations walked`,done:"I walked this station",
+  k:{an:"Think of it like…",ru:"The rule in plain words",pj:"Case study: Percy Jackson",tr:"Try it (20 minutes)",mi:"Common trap",ck:"Checklist"},
+  pjIntro:"Every station has a Percy Jackson example, taken from The Lightning Thief (Rick Riordan). Spoilers ahead. Plot details were written from memory and public summaries; check them against your own copy.",
+  mapIntro:"Tap a station. Do the 20-minute task before you move on. Writing teaches you faster than reading.",
+  copy:"Copy prompt",copied:"Copied ✓",
+  pjTitle:"One whole story on one map",pjLead:"Here is The Lightning Thief laid on the trail. Pick a story you love and fill in the same table. You will start to see the skeleton under every story.",
+  pjCols:["Station","What the story does (in our words)"],
+  scoreTitle:"Score My Story",scoreLead:"Copy this prompt into ChatGPT, Gemini or any AI chat. Then paste your story below it. The AI will score you out of 100 against the same rubric used on this site and coach you, without rewriting your work.",
+  rubricTitle:"The rubric",rubCols:["Area","Points","Station"],
+  rules:["The AI is your coach, not your ghostwriter. Your story must stay yours.","If AI helped you, say how (in a note to your teacher or readers).","Do not paste personal info (full name, school, address) into any AI.","A first draft usually scores 60–75. That is normal. The point is the next draft."],
+  toolsTitle:"Toolbox",
+  foot:"Inspired by the craft ideas in 《让写作成为你的副业：短篇故事创作及变现攻略》 by 北海 (开明出版社, 2025). This page is an original rewrite for young writers, with its own examples and wording. It leaves out the book’s market and income chapters. If you want the full book, please buy it. Percy Jackson is a trademark of its owners; this page is an educational study. Example lines marked “imitation” are written by us."},
+ zh:{h1:"故事之路",sub:"一张从第一个火花到写完一篇短篇小说的地图。一站一站往前走，也可以拿你最爱的故事来对照练习。",
+  tabs:{map:"🗺 地图",pj:"⚡ 《波西·杰克逊》案例",score:"🏆 给我的故事打分",tools:"🧰 工具箱"},
+  prog:(n,t)=>`已走完 ${n} / ${t} 站`,done:"这一站我走完了",
+  k:{an:"可以这样想……",ru:"白话规则",pj:"案例：波西·杰克逊",tr:"动手试一试（20 分钟）",mi:"常见的坑",ck:"检查清单"},
+  pjIntro:"每一站都配了《波西·杰克逊：神火之贼》（雷克·莱尔顿）的例子。有剧透。情节是凭记忆和公开简介写的，请对照你自己的书核对。",
+  mapIntro:"点开一站。先完成 20 分钟小任务再往下走。写，比看学得快。",
+  copy:"复制提示词",copied:"已复制 ✓",
+  pjTitle:"整个故事放在一张地图上",pjLead:"这是《神火之贼》放在“故事之路”上的样子。挑一个你喜欢的故事，照着同一张表自己填，你会看见每个故事底下的骨架。",
+  pjCols:["站点","这个故事做了什么（我们的话）"],
+  scoreTitle:"给我的故事打分",scoreLead:"把下面的提示词复制到 ChatGPT、Gemini 或任何 AI 对话里，再把你的故事贴在后面。AI 会按本站同一张评分表给你打 100 分制，并给出教练式建议，但不会替你改写。",
+  rubricTitle:"评分表",rubCols:["项目","分值","对应站点"],
+  rules:["AI 是教练，不是代笔。故事必须还是你的。","如果 AI 帮过你，要说明帮了什么（写给老师或读者的小说明）。","不要把真实姓名、学校、住址发给任何 AI。","初稿通常 60–75 分，这很正常。重点是下一稿。"],
+  toolsTitle:"工具箱",
+  foot:"本页的创作思路受《让写作成为你的副业：短篇故事创作及变现攻略》（北海，开明出版社，2025）启发。内容是为青少年重新改写的原创版本，用的是自己的例子和表述，没有收入书中关于市场和收益的章节。想读完整原书，请购买正版。“波西·杰克逊”是其权利人的商标，本页仅作学习研究。标注“仿写”的句子是我们自己写的。"}
+};
+// ---- stations
+const S=[
+{id:0,
+ en:{t:"Collect Sparks",tag:"Where stories come from",an:"Your notebook is a loot bag. Ideas are rare drops: if you don’t pick them up, you can’t use them.",
+  ru:["“Inspiration” is not magic. It is just material that stuck in your mind and made you want to write.","Collect on six kinds of cards, called CLOSAT: Character, Location, Object, Situation (a tense moment), Action (a strange or revealing act), Theme (what it is really about).","Ask two questions about anything you notice: “Why?” and “And then?”","Your real life is raw material, but raw is not a story yet. Add a conflict, a change and a feeling."],
+  pj:["Rick Riordan is widely reported to have started by telling Greek-myth bedtime stories to his young son. A kid who struggles at school (Character) + Greek gods in modern America (Location + Theme).","A pen that turns into a sword (Object). A museum trip where a teacher turns into a monster (Situation). Vaporizing that teacher by accident (Action)."],
+  tr:"Make 6 cards this week, one per letter, from things you really saw or heard. Pick your best Situation card and ask “Why?” and “And then?” three times in a row.",
+  mi:"One giant messy pile. Or only saving your own big life events: they matter to you, but readers need conflict and change.",
+  ck:["6 cards, each 3 lines or less","One card has three Why/And-then answers","Each card is filed under a letter so you can find it"]},
+ zh:{t:"收集火花",tag:"故事从哪里来",an:"笔记本是你的战利品背包。灵感是稀有掉落，不捡起来就用不上。",
+  ru:["“灵感”不是魔法，只是一种让你印象深刻、想动笔的素材。","用 CLOSAT 六种卡片收集：人物 Character、地点 Location、物件 Object、场景 Situation（有张力的一刻）、行为 Action（奇怪或有揭示性的举动）、主题 Theme（它真正讲的是什么）。","对看到的任何事都问两句：“为什么？”和“然后呢？”","生活是原材料，但原材料还不是故事。要加上冲突、变化和情绪。"],
+  pj:["据多处报道，雷克·莱尔顿最初是给年幼的儿子讲希腊神话睡前故事。一个在学校吃力的孩子（人物）+ 现代美国里的希腊诸神（地点+主题）。","会变成剑的圆珠笔（物件）。博物馆郊游时老师变成怪物（场景）。一不小心把那位老师“蒸发”了（行为）。"],
+  tr:"这周做 6 张卡，每个字母一张，素材必须来自你真的看到或听到的事。挑一张最好的“场景”卡，连问三遍“为什么？”和“然后呢？”",
+  mi:"所有东西堆成一大堆。或者只记自己经历过的大事：对你重要，对读者不一定，读者要的是冲突和变化。",
+  ck:["6 张卡，每张不超过 3 行","有一张卡回答了三轮“为什么/然后呢”","按字母归好类，方便以后找"]}},
+{id:1,
+ en:{t:"One-Sentence Story",tag:"Your story in one line",an:"The label on a jar. If you can’t say what’s inside in one sentence, the jar may be empty.",
+  ru:["Formula: [Who] wants [goal], but [obstacle], so [action], and ends with [change or result].","A good one-liner has a hook: a special power, a secret, a trapped place, a swapped role.","Use it as a compass. If a scene doesn’t serve the sentence, cut it, even if it’s fun.","Write 3 versions. Pick the one with the biggest obstacle."],
+  pj:["Our one-liner (not the publisher’s): a 12-year-old who learns he’s the son of a Greek god has ten days to return a stolen lightning bolt and stop a war between the gods, while everyone thinks he’s the thief.","Who: a 12-year-old. Goal: return the bolt. Obstacle: ten days and he’s the suspect. Cost: a war."],
+  tr:"Write three one-sentence versions of your idea. Underline the obstacle in each. Choose the one where the obstacle is hardest to beat.",
+  mi:"A topic is not a story: “a story about friendship” has no goal and no obstacle.",
+  ck:["Has a WHO and a WANT","Has an obstacle","Shows some change at the end","A friend can repeat it back to you"]},
+ zh:{t:"一句话故事",tag:"用一句话说清你的故事",an:"罐子上的标签。如果一句话说不出里面装了什么，罐子可能是空的。",
+  ru:["公式：【谁】想要【目标】，但是【障碍】，于是【行动】，最后【变化/结果】。","好的一句话带钩子：特殊能力、秘密、被困的地方、身份互换。","把它当指南针。哪个场景不为这句话服务，就算再好玩也要删。","写 3 个版本，选障碍最大的那个。"],
+  pj:["我们自己写的一句话（不是出版社的）：一个 12 岁男孩发现自己是希腊神的儿子，只有十天时间把被偷的闪电还回去、阻止诸神开战，而所有人都认为他是小偷。","谁：12 岁男孩。目标：还回闪电。障碍：十天，而且他是嫌疑人。代价：一场战争。"],
+  tr:"把你的点子写成三个一句话版本，每个版本把“障碍”画线。选障碍最难打败的那个。",
+  mi:"主题不是故事：“关于友情的故事”没有目标，也没有障碍。",
+  ck:["有“谁”和“想要什么”","有障碍","结尾有变化","朋友能把它复述出来"]}},
+{id:2,
+ en:{t:"Know Your Hero",tag:"Goal, cost, weakness",an:"A character sheet in a role-playing game: strength, weakness, fear and a quest. Fill it in before you start the adventure.",
+  ru:["Your hero needs: a specific WANT, a reason they can’t just walk away, a COST if they fail, and a weakness or fear.","Every person has a surface side and an inner side. The inner side only shows under pressure: who runs, who stays?","A story is mostly how the hero changes. The start-hero and end-hero should be different.","Give the hero things they hate, then make them face those things.","An opponent doesn’t have to be evil. They just want something that clashes with the hero’s want. An ally shares the hero’s goal."],
+  pj:["At school Percy is labeled a troublemaker (the book gives him ADHD and dyslexia). The story flips the label: the traits that cause trouble in class turn out to be useful in the world of monsters.","Surface: reluctant, sarcastic kid. Inner: loyal. He risks himself for his friends and his mom.","Ally: Annabeth (the planner) and Grover (nervous but loyal). Rival: Clarisse. Each wants something that crosses Percy’s path in a different way."],
+  tr:"Fill a hero sheet: Want / Why they can’t quit / Cost of failing / Fear / Surface vs inner / One thing they hate. Then write a 5-line scene where they must face the thing they hate.",
+  mi:"A perfect hero with no weakness, or a goal like “to be happy”.",
+  ck:["Specific want","Reason they can’t quit","Cost of failing","A flaw","A surface/inner gap"]},
+ zh:{t:"认识你的主角",tag:"目标、代价、弱点",an:"角色扮演游戏里的角色卡：强项、弱点、恐惧和任务。开始冒险之前先把它填好。",
+  ru:["主角需要：一个具体的【想要】、一个“不能转身离开”的理由、失败时的【代价】，以及一个弱点或恐惧。","每个人都有表面和内在。内在只在压力下才露出来：谁会跑，谁会留下？","故事的本质是主角如何改变。开头的他和结尾的他应该不一样。","找出主角讨厌的东西，然后让他去面对。","对手不一定是坏人，只是他想要的和主角冲突。伙伴则和主角目标一致。"],
+  pj:["波西在学校被当作“问题学生”（书里设定他有多动和阅读障碍）。故事把这个标签翻转了：在课堂上惹麻烦的特点，到了怪物世界里反而有用。","表面：不情愿、爱讽刺的孩子。内在：讲义气，为朋友和妈妈敢冒险。","伙伴：安娜贝斯（会做计划）和格罗弗（胆小但忠诚）。对手：克拉丽丝。每个人想要的东西，都以不同方式挡到波西的路。"],
+  tr:"填一张主角卡：想要 / 为什么不能放弃 / 失败的代价 / 恐惧 / 表面 vs 内在 / 他讨厌的一件事。再写 5 行：他被迫面对那件他讨厌的事。",
+  mi:"完美主角没有弱点，或者目标只是“想要开心”。",
+  ck:["具体的目标","不能放弃的理由","失败的代价","一个缺点","表面和内在有反差"]}},
+{id:3,
+ en:{t:"Blueprint",tag:"Outline and three acts",an:"A video game: a short tutorial level (Act 1), longer levels that get harder (Act 2), then the boss fight and credits (Act 3).",
+  ru:["An outline is a map for you. A table or mind map works best: you can move pieces around.","Act 1 (about 10%): setup → an inciting incident that breaks normal life → a first turning point where the hero chooses and can’t go back.","Act 2 (the long middle): problems keep growing, with allies and opponents, until the hero hits the lowest point.","Act 3 (about 10–20%): the climax, then the resolution. Tie every thread.","Write a 300-word summary first. Then expand it to a ~1000-word outline. Tag each beat with its conflict and a small hook.","A new idea that breaks the plan? Keep it if it helps the main line. If not, park it in an idea box."],
+  pj:["Act 1: ordinary school life → a class trip where the teacher turns into a monster (inciting incident) → a summer of more attacks, his mom vanishes, he reaches a hidden camp, learns who his father is, and accepts the quest (first turning point).","Act 2: a cross-country quest with monsters and a ticking clock, rising to a very dark place where he is accused and cornered.","Act 3: the truth about who really took the bolt, the confrontation, and getting the bolt home."],
+  tr:"On one card write one sentence each for: normal life, inciting incident, first turning point, lowest point, climax, end.",
+  mi:"An outline that is a list of events with no conflict in them.",
+  ck:["Six beats written","Each middle beat has a problem","Inciting incident is early","Lowest point is truly low"]},
+ zh:{t:"蓝图",tag:"大纲与三幕结构",an:"像电子游戏：一个短短的新手关（第一幕）、越来越难的主线关卡（第二幕）、最后是 Boss 战和片尾（第三幕）。",
+  ru:["大纲是给你自己看的地图。表格或思维导图最好，方便挪动。","第一幕（约占 10%）：设置 → 打破日常的“激励事件” → 主角做出选择、无法回头的“第一情节点”。","第二幕（最长的中段）：麻烦越来越大，有伙伴也有对手，直到主角掉到最低点。","第三幕（约占 10–20%）：高潮，然后收尾。把所有线索都收好。","先写 300 字梗概，再扩成约 1000 字的大纲。每一段标上它的冲突和一个小钩子。","写着写着冒出新点子？如果能帮主线就保留；不能，就放进“点子盒”。"],
+  pj:["第一幕：平常的学校生活 → 郊游时老师变成怪物（激励事件）→ 暑假里更多袭击、妈妈消失，他来到隐藏的营地，知道了爸爸是谁，并接受任务（第一情节点）。","第二幕：横跨美国的任务，有怪物，有倒计时，越来越黑暗，直到他被指控、被逼到角落。","第三幕：真正偷走闪电的人浮出水面，对峙，把闪电送回去。"],
+  tr:"在一张卡上各写一句：平常生活 / 激励事件 / 第一情节点 / 最低点 / 高潮 / 结尾。",
+  mi:"大纲只是事件清单，里面没有冲突。",
+  ck:["六个节点都写了","中段每一段都有问题","激励事件出现得早","最低点真的很低"]}},
+{id:4,
+ en:{t:"The Opening",tag:"Hook them fast",an:"A movie poster or a food photo on a menu: it shows the best part and promises more. Nobody owes your story their time.",
+  ru:["Start where something changes: just moved, just lost something, test day, a strange invitation. Don’t start from birth, from “a normal day”, or with a world encyclopedia.","How strongly a reader cares equals how much it matters to the hero. Put the hero in trouble or at a crossroads.","Two easy openers: (a) start inside a conflict; (b) put the hero in a strange or extreme situation.","The “opening” is the whole of Act 1. Keep the promise of fun alive until the story is truly rolling.","First person (“I”) gives instant closeness, which is why many short stories use it."],
+  pj:["Chapter 1’s title already promises a monster-teacher disaster. It is a hook by itself.","The first line gives a voice: a reluctant narrator who would rather not be this kind of kid.","No lecture about Olympus first. The world is revealed through things that happen to him."],
+  tr:"Write your opening three ways: (a) in a conflict, (b) in a strange situation, (c) in a strong voice. Choose the best. Then delete your first three paragraphs and see if the story starts better.",
+  mi:"Backstory dump. Waking up to an alarm clock. Starting in childhood.",
+  ck:["Something changes in the first 100 words","The reader knows whose story it is","No more than 2 sentences of background in a row"]},
+ zh:{t:"开头",tag:"快速抓住读者",an:"电影海报，或菜单上的美食照：把最好的部分亮出来，并许诺还有更多。没人有义务读你的故事。",
+  ru:["从“有事情发生变化”的那一刻开始：刚搬家、刚失去什么、考试日、一份奇怪的邀请。不要从出生、“平常的一天”或世界百科开始。","读者在不在乎，取决于这件事对主角有多重要。让主角陷入麻烦，或站在十字路口。","两种好用的开法：（一）直接从冲突里开始；（二）把主角放在奇怪或极端的处境里。","“开头”其实是整个第一幕。要一直保持“好玩”的承诺，直到故事真正跑起来。","第一人称“我”会让读者立刻靠近，所以很多短篇都用它。"],
+  pj:["第一章的标题就许诺了“怪物老师”的大灾难，标题本身就是钩子。","第一句话就给出声音：一个不情愿的叙述者，更想做个普通孩子。","没有先讲一大堆奥林匹斯的知识，世界是通过发生在他身上的事慢慢展开的。"],
+  tr:"把你的开头写三遍：（一）在冲突里、（二）在奇怪处境里、（三）用强烈的声音。选最好的。再试着删掉前三段，看故事是不是开始得更好。",
+  mi:"背景大段交代。闹钟响起、起床。从童年写起。",
+  ck:["前 100 字内有变化","读者知道这是谁的故事","背景介绍不连续超过 2 句"]}},
+{id:5,
+ en:{t:"The Middle: Dominoes",tag:"Escalate and connect",an:"A row of dominoes, or game levels that get harder, with a health bar that shows what the hero could lose.",
+  ru:["The middle’s job: keep the reader worried. Pattern: trouble → hero tries → blocked or new complication → tries another way → worse.","Each scene should cause the next. Test: between two scenes you should be able to write “so” or “but”, not “and then”.","Raise the cost every time. Ask: if the hero fails now, what do they lose? It should be more than last time.","Give the hero reasons to take the hard path (why not just call an adult or give up?). Without reasons, readers say “that’s dumb”.","“Cost” can be an inner loss: a dream, a friendship, a reputation. A ticking clock makes everything feel urgent.","Avoid a list of events and random lucky breaks."],
+  pj:["The quest is a chain: each stop causes the next problem. The clock is real and it gets worse, for example at a hotel where time slips away while they enjoy themselves.","Stakes grow from “my mom” to “my friends” to “a war between gods”.","The powerful people who could help are the ones accusing him or staying out of it, so he has to do it himself."],
+  tr:"Domino test: list your middle scenes. Between each pair write SO or BUT. Fix every AND THEN. Add a column: “What could the hero lose here?”",
+  mi:"Every problem is the same size. A helper appears from nowhere.",
+  ck:["No “and then” between scenes","Costs rise","Hero has believable reasons","A clock or deadline exists"]},
+ zh:{t:"中段：多米诺",tag:"升级，并环环相扣",an:"一排多米诺骨牌，或越来越难的游戏关卡，还有一根血条显示主角会失去什么。",
+  ru:["中段的任务：让读者一直担心。节奏：遇到麻烦 → 主角尝试 → 被挡住或出现新麻烦 → 换个办法 → 更糟。","每个场景要引出下一个。测试：两个场景之间应该能写“于是”或“但是”，而不是“然后”。","每次都抬高代价。问：如果主角这次失败，他会失去什么？应该比上一次更多。","给主角走难路的理由（为什么不找大人、不放弃？）。没有理由，读者会说“好蠢”。","“代价”可以是内心的损失：梦想、友情、名声。倒计时会让一切显得紧迫。","避免事件清单，也避免凭空来的好运。"],
+  pj:["任务是一条链：每一站都引出下一个麻烦。倒计时是真的，而且越来越糟，比如在一家让人玩得忘了时间的酒店里，时间悄悄溜走。","赌注从“我妈妈”到“我的朋友们”再到“诸神之间的战争”，越来越大。","本来能帮他的有权力的人，恰恰是指控他或袖手旁观的人，所以他只能靠自己。"],
+  tr:"多米诺测试：列出你的中段场景，每两个之间写“于是”或“但是”，把所有“然后”改掉。再加一列：“主角在这里可能失去什么？”",
+  mi:"每个麻烦都一样大。凭空出现一个帮手。",
+  ck:["场景之间没有“然后”","代价越来越高","主角的理由可信","有倒计时或截止日期"]}},
+{id:6,
+ en:{t:"The Climax: Charged Attack",tag:"The biggest test",an:"A charged attack in a game: the wind-up is long, the hit is short, and it only works if you charged it.",
+  ru:["The climax is the peak of the conflict. It has to test who the hero IS, not only how strong they are: a hard choice between two things they care about, or between what is easy and what is right.","Two moves: CHARGE (plant clues and pressure so the reader feels the storm coming), then RELEASE (one strong event that bursts the dam).","If the problem is the same size as earlier problems, the ending feels flat. Make it a different, deeper kind of problem.","Add a surprise: just when readers relax because a plan looks perfect, something nobody expected goes wrong.","Squeeze the peak into one short, intense moment. Push it to the last possible second (the final minute, the final point).","Let the hero DO something physical that changes the outcome. Talking alone is weaker."],
+  pj:["Early on, the story plants a warning that a friend will betray the hero. At the climax that seed is harvested. That is “charging” in action.","Spoiler: the final confrontation is about trust, not only strength.","Also notice the deadline: everything is pushed up against the summer solstice."],
+  tr:"Write your hero’s “soul question”: Choose between A (what they love) and B (what is right). Then list three seeds you will plant in the first half.",
+  mi:"The big fight is solved by a phone call, luck, or a brand-new helper.",
+  ck:["Soul question written","Three seeds planted earlier","Deadline pushes it to the last moment","The hero acts"]},
+ zh:{t:"高潮：蓄力大招",tag:"最大的考验",an:"游戏里的蓄力大招：蓄力很长，出手很短，而且必须先蓄力才有效。",
+  ru:["高潮是冲突的顶点。它要考验“主角是什么样的人”，而不只是“他有多强”：在两样珍视的东西之间选择，或在“容易”和“正确”之间选择。","两个动作：蓄力（埋下线索和压力，让读者感到暴风雨将至），然后释放（一个强烈的事件冲破大坝）。","如果这次的问题和前面的差不多大，结尾会很平。要换成一种不同的、更深的问题。","加一个意外：就在读者因为计划很完美而放松的时候，出了没人想到的状况。","把峰值压缩在一个短而强烈的瞬间，并推迟到最后一刻（最后一分钟、最后一分）。","让主角亲自做一个能改变结果的动作，光说话比较弱。"],
+  pj:["故事早早埋下一个警告：有一位朋友会背叛主角。到了高潮，这颗种子被收割。这就是“蓄力”。","剧透：最后的对峙，比的是信任，不只是力量。","也注意那个倒计时：一切都被推到夏至的期限上。"],
+  tr:"写下主角的“灵魂拷问”：在 A（他珍视的）和 B（正确的）之间选一个。再列出三颗你要在前半部分埋的种子。",
+  mi:"大战靠一个电话、运气或一个全新的帮手解决。",
+  ck:["写好了灵魂拷问","前面埋了三颗种子","期限把它推到最后一刻","主角亲自行动"]}},
+{id:7,
+ en:{t:"The Ending: Two Locks",tag:"Close the outside and the inside",an:"A treasure chest with two locks. One key opens the Action lock (the outside problem). Another opens the Meaning lock (what changed inside the hero).",
+  ru:["Readers judge a story mostly by its high point and its ending (a psychology idea called the peak–end rule). Don’t rush the ending.","Action ending: quick and direct. It answers “what happened?” (the villain is stopped, the mystery is solved).","Meaning ending: shows what the hero learned or how they changed, and what the story was really about. It can leave a little room to think.","Tone choices: happy, sad, realistic, or bittersweet (good for some people, bad for others).","Tie every thread. Don’t dig a hole and leave it open.","Nice trick: echo the opening image, but with a changed hero."],
+  pj:["Action lock: the bolt is returned and the war is stopped.","Meaning lock: the kid who didn’t fit anywhere now has friends, a home base, and a different understanding of the father he never knew.","Notice that the ending shows change by what Percy does and chooses, not by someone explaining the moral."],
+  tr:"Write two endings: one with only the action lock, one with both. Read them aloud. Which one stays with you? Then write one line that echoes your opening.",
+  mi:"A lecture about the lesson. Loose threads. “It was all a dream.”",
+  ck:["Main problem closed","Hero visibly changed","Threads tied","No moral speech"]},
+ zh:{t:"结尾：两把锁",tag:"外部问题和内心问题都要收",an:"一只有两把锁的宝箱。一把钥匙开“动作锁”（外部问题），另一把开“意义锁”（主角内心的变化）。",
+  ru:["读者主要根据故事的高点和结尾来评价它（心理学里的“峰终定律”）。别匆忙收尾。","动作结局：快而直接，回答“发生了什么”（坏人被挡住、谜题解开）。","意义结局：显示主角学到了什么、怎么变了，以及这个故事真正在讲什么。可以留一点想象空间。","基调可以选：喜、悲、写实，或悲喜交加（对有些人是好事，对另一些人是坏事）。","把所有线索都收好，不要挖了坑却不填。","一个好用的小技巧：呼应开头的画面，但这时主角已经变了。"],
+  pj:["动作锁：闪电送回，战争被阻止。","意义锁：那个哪里都不合群的孩子，现在有了朋友、有了落脚的地方，也对从没见过的父亲有了不同的理解。","注意：结尾是靠波西做的事和选择来显示变化，而不是靠别人讲道理。"],
+  tr:"写两个结尾：一个只有动作锁，一个两把锁都有。大声读出来，哪一个更留得住？再写一句话呼应你的开头。",
+  mi:"讲大道理。线索没收。“原来都是一场梦”。",
+  ck:["主要问题解决了","主角明显变了","线索收好了","没有说教"]}},
+{id:8,
+ en:{t:"Power-up: Conflict",tag:"Want + obstacle",an:"A river between you and the cookie jar. Wanting the cookie is the desire. The river is the obstacle. The story is the crossing.",
+  ru:["Conflict = a strong want + something in the way.","LOCK tool: Lead (an interesting person), Objective (a clear want: get something or escape something), Confrontation (obstacles), Knockout (an ending people remember).","Kinds of conflict: person vs person, vs nature, vs society, vs fate or the supernatural, and person vs self (doubt, fear, a moral choice). Mix outer and inner.","Make it hotter in three ways: raise the cost of failing, make winning harder, and bind the opponent to the hero so neither can walk away.","Make it believable: a cause-and-effect chain, choices that match the character, and a world with rules (a magic power needs limits).","Conflict must leave consequences that cannot be undone."],
+  pj:["Person vs person: rivals and accusers. Nature or monsters: the road itself. Society: the label put on him at school. Fate: a prophecy. Self: his anger and mixed feelings about his father.","World rules: the gods are bound by laws, the camp has borders, and Percy’s power has limits (he is stronger near water)."],
+  tr:"For one scene in your story fill: Want / Obstacle / Kind of conflict / What is lost if the hero fails / What can’t be undone afterwards. If any cell is empty, the scene is weak.",
+  mi:"Conflict that is just shouting. Obstacles the hero can easily walk around.",
+  ck:["Clear want","Strong obstacle","Real cost","Cannot be undone"]},
+ zh:{t:"加强技能：冲突",tag:"想要 + 障碍",an:"你和饼干罐之间隔着一条河。想吃饼干是欲望，河是障碍，故事就是过河。",
+  ru:["冲突 = 强烈的想要 + 挡在中间的东西。","LOCK 工具：主角 Lead（有趣的人）、目标 Objective（明确的想要：得到什么，或逃离什么）、冲突 Confrontation（障碍）、冲击结局 Knockout（让人记住的收尾）。","冲突的种类：人与人、人与自然、人与社会、人与命运/超自然，以及人与自己（怀疑、恐惧、道德选择）。内外交织。","从三个方向让它更猛：抬高失败的代价、让胜利更难、把对手和主角“绑”在一起，谁也绕不开谁。","要可信：有因果链，选择符合性格，世界有规则（魔法要有限制）。","冲突要留下无法撤销的后果。"],
+  pj:["人与人：对手和指控者。人与自然/怪物：这一路本身。人与社会：学校给他贴的标签。人与命运：预言。人与自己：他的怒气，以及对父亲复杂的感觉。","世界规则：诸神受法则约束，营地有边界，波西的能力有限制（靠近水时更强）。"],
+  tr:"选你故事里的一个场景，填：想要 / 障碍 / 冲突类型 / 主角失败会失去什么 / 之后什么无法撤销。有任何一格是空的，说明这个场景偏弱。",
+  mi:"冲突只是吵架。主角很容易绕开的障碍。",
+  ck:["想要很明确","障碍够强","代价真实","无法撤销"]}},
+{id:9,
+ en:{t:"Power-up: Dialogue and Voice",tag:"Make people sound like people",an:"Voice skins: every character wears their own. And the iceberg: what is said is the tip; what is felt is underwater.",
+  ru:["Every line of dialogue should do at least one job: move the plot, show who someone is, give needed information, create tension, or hint at the theme.","Layouts: Name said: “…” / “…” name said, “…” / “…” name said. / no tag at all, for fast two-person exchanges.","Replace a flat “said” with a small action or detail (a shrug, a glance away).","Voices differ by background, age, personality and mood. A boss, a nervous kid and a grandparent should not sound alike.","Subtext: say half, leave half. People often don’t say what they truly feel.","Cover-the-names test: can you still tell who is speaking?"],
+  pj:["Percy’s narration is sarcastic and honest; Annabeth thinks in plans; Grover worries out loud. That is what makes a trio fun to read.","Imitation lines (ours, not from the book), all answering “Let’s rest.”","• Sarcastic: “Great plan. Nothing says ‘ten-day deadline’ like a nap.”","• Planner: “One hour. Then we move, ready or not.”","• Nervous: “Rest? Out here? Sure, if you want to be somebody’s snack.”"],
+  tr:"Write one line (“I’m not scared.”) in three voices for three characters. Cover the names and ask a friend to guess who said which.",
+  mi:"Everyone sounds the same. Long speeches. “As you know…” info dumps.",
+  ck:["Each character has a different rhythm","Some things are left unsaid","No long speeches","Passes the cover-the-names test"]},
+ zh:{t:"加强技能：对话与声音",tag:"让人物像真人说话",an:"“声音皮肤”：每个角色穿自己的那一套。还有冰山：说出口的只是冰山一角，没说出口的在水下。",
+  ru:["每句对话至少要做一件事：推动情节、显示人物、提供必要信息、制造紧张，或暗示主题。","写法：某某说：“……” / “……”某某说，“……” / “……”某某说。 / 也可以不加说话人，用在快速的两人对话里。","把平淡的“说”换成一个小动作或细节（耸肩、移开视线）。","不同的背景、年龄、性格和情绪，说话方式就不同。老板、胆小的孩子和老人不应该说得一样。","潜台词：说一半，留一半。人们常常不会直接说出真正的感受。","遮名字测试：不看名字，你还能分出是谁在说话吗？"],
+  pj:["波西的叙述讽刺又坦率；安娜贝斯凡事想计划；格罗弗会把担心说出声。这就是三人组好看的原因。","仿写句（我们自己写的，不是书里的），都回答“我们歇会儿吧”。","• 讽刺型：“好主意。‘十天期限’这几个字，最适合配一场午觉。”","• 计划型：“一小时。然后出发，不管你准没准备好。”","• 胆小型：“歇？在这儿？行啊，只要你想当别人的点心。”"],
+  tr:"把同一句（“我不怕。”）用三种声音写给三个角色。盖住名字，让朋友猜是谁说的。",
+  mi:"每个人说话一个样。大段独白。“如你所知……”式的信息灌输。",
+  ck:["每个人节奏不同","有一些话没说出口","没有长篇大论","能通过遮名字测试"]}},
+{id:10,
+ en:{t:"Power-up: Teaser and Chapter Hooks",tag:"Make them keep reading",an:"A movie trailer: one minute that makes you want the whole film. And the end of a TV episode that makes you press “next”.",
+  ru:["A teaser is a 3–5 sentence blurb (about 150 words or less) with high information, conflict or surprise, a feeling, and a hook at the end.","Z-shape in three parts: (1) who, where, the situation, so the reader can follow; (2) something unexpected happens, a first turn; (3) another twist or a big moment, ending with a question for the story to answer.","Use short sentences, easy words, the same voice as the story, and show the genre.","Chapter hooks: end a scene at the most exciting point, a decision or a reveal. (Writers on serialized platforms use the same trick to keep readers coming back.)","Play fair: the answer must be real. No magic fix from nowhere."],
+  pj:["Z-teaser (ours): (1) A 12-year-old troublemaker survives yet another disastrous school trip. (2) Then his teacher turns into a monster, and she knows who he really is. (3) Now the gods say he stole Zeus’s lightning bolt, and he has ten days to prove he didn’t."],
+  tr:"Write a 3-part Z-teaser for your story. Show it to someone for 10 seconds and ask: who is the hero, what’s the problem, what do they want to know next?",
+  mi:"Teaser that only gives the setting. A hook with no real payoff.",
+  ck:["Hero and problem visible","Two turns","Ends on a question","Under 150 words"]},
+ zh:{t:"加强技能：导语与章节钩子",tag:"让人想一直读下去",an:"电影预告片：一分钟让你想看整部电影。还有电视剧每集结尾，让你忍不住点“下一集”。",
+  ru:["导语是 3–5 句的简介（约 150 字以内），信息密度高，有冲突或转折，有情绪，结尾有钩子。","Z 字形三段：（一）谁、在哪、什么处境，让读者看得懂；（二）出现意外，第一次转折；（三）再一次转折或高能时刻，以一个要由故事回答的问题收尾。","用短句、简单的词，风格和正文一致，并让读者看出类型。","章节钩子：把一个场景停在最刺激的点上，比如一个决定或一个揭示。（连载平台的作者也用同样的办法让读者回来。）","要讲公平：答案必须是真的，不能凭空来一个魔法解决。"],
+  pj:["Z 型导语（我们自己写的）：（一）一个 12 岁的“问题学生”又熬过了一次灾难般的郊游。（二）然后他的老师变成怪物，而且她知道他是谁。（三）现在诸神说是他偷了宙斯的闪电，他只有十天证明自己的清白。"],
+  tr:"给你的故事写一个三段式 Z 型导语。给别人看 10 秒，然后问：主角是谁？问题是什么？他还想知道什么？",
+  mi:"导语只写了背景。钩子最后没有真正兑现。",
+  ck:["看得见主角和问题","有两次转折","结尾是一个问题","不超过 150 字"]}},
+{id:11,
+ en:{t:"Final Boss: Revise and Score",tag:"Draft → score → fix → share",an:"The boss fight uses every skill you collected. You don’t beat it in one hit; you learn its pattern and try again.",
+  ru:["Finish a whole draft first. A finished messy story teaches more than a perfect first page.","Let it rest, then read it aloud. Where did you stumble? Where did you get bored?","Score yourself first with the rubric. Then use the AI coach prompt (tab “Score My Story”).","Fix the top 1–3 problems only. Re-score. Share with a real person.","Rules: the AI coaches, you write. Tell your reader how AI helped you."],
+  pj:["Think about how many drafts a famous book goes through. A first draft is allowed to be rough."],
+  tr:"Finish a 1,500–3,000 word story. Score it, fix 3 things, score again. Write down which score went up and why.",
+  mi:"Asking AI to rewrite it for you. Fixing ten things at once. Quitting at the first low score.",
+  ck:["Finished draft","Read aloud","Self-score first","AI score","Fixed 1–3 things","Shared with a person"]},
+ zh:{t:"最终 Boss：修改与打分",tag:"初稿 → 打分 → 修改 → 分享",an:"Boss 战要用上你收集的所有技能。不是一击就能赢，而是摸清它的套路再试一次。",
+  ru:["先把整篇草稿写完。写完一篇乱糟糟的故事，比写一页完美的开头学得多。","放一放，然后大声读出来。哪里卡壳？哪里读着无聊？","先用评分表给自己打分，再用 AI 教练提示词（“给我的故事打分”标签页）。","只改最重要的 1–3 个问题，再打分，然后拿给真人看。","规则：AI 当教练，你来写。要告诉读者 AI 帮了你什么。"],
+  pj:["想想一本著名的书要改多少稿。初稿允许粗糙。"],
+  tr:"写完一篇 1500–3000 字的故事。打分，改 3 处，再打一次分。记下哪项分数涨了，为什么。",
+  mi:"让 AI 直接帮你重写。一次改十个问题。第一次分数低就放弃。",
+  ck:["写完了整篇","大声读过","先自评","AI 打分","改了 1–3 处","给真人看过"]}}
+];
+const PJ={ // Station -> text
+ en:["Sparks: bedtime myths, a pen-sword, a museum-trip monster.","One-liner: a 12-year-old has ten days to return a stolen bolt and stop a war, and he is the suspect.","Hero: a labeled “troublemaker” who turns out loyal; allies and a rival.","Blueprint: normal school life → monster teacher → camp and quest → dark place → truth → return.","Opening: a title that promises disaster; a reluctant, funny voice; start on the day things break.","Middle: a chain of stops, a real clock, rising stakes.","Climax: a planted warning about betrayal pays off in a trust-based showdown (spoiler).","Ending: bolt returned and war avoided; a kid who belonged nowhere now has a place.","Conflict: person, monsters, society, fate, self, all layered.","Dialogue: three clearly different voices.","Teaser: the Z-shaped blurb in Station 10.","Boss: the story is clearly built; try to rebuild one you love."],
+ zh:["火花：睡前神话、会变剑的笔、郊游遇怪的博物馆。","一句话：12 岁男孩有十天把被偷的闪电还回去、阻止战争，而他是嫌疑人。","主角：被贴“问题学生”标签、其实很讲义气；有伙伴也有对手。","蓝图：平常学校生活 → 怪物老师 → 营地和任务 → 黑暗处 → 真相 → 归还。","开头：标题就许诺灾难；不情愿又好笑的声音；从出事那天开始。","中段：一站接一站，有真实的倒计时，赌注越来越大。","高潮：前面埋的“朋友会背叛”的警告在信任对决中兑现（剧透）。","结尾：闪电送回，战争避免；原来哪里都不合群的孩子有了归处。","冲突：人、怪物、社会、命运、自己，层层交织。","对话：三种明显不同的声音。","导语：第 10 站里的 Z 型简介。","Boss：这个故事的结构很清楚；试着给你爱的故事也画一遍。"]};
+const RUB=[["1 · Premise / 一句话",10,"1"],["2 · Opening / 开头",15,"4"],["3 · Hero, goal, stakes / 主角、目标、代价",15,"2"],["4 · Middle / 中段",20,"5, 8"],["5 · Climax / 高潮",15,"6"],["6 · Ending / 结尾",10,"7"],["7 · Conflict, dialogue, voice / 冲突、对话、声音",10,"8, 9"],["8 · Readability / 好读",5,"10, 11"]];
+const TOOLS={
+ en:[["One-sentence story","[WHO] wants [GOAL], but [OBSTACLE], so [ACTION], and in the end [CHANGE / RESULT]."],
+     ["CLOSAT card","Type: C / L / O / S / A / T\nWhat I saw or heard:\nWhy? ->\nAnd then? ->\nPossible story use:"],
+     ["Hero sheet","Name:\nWant (specific):\nWhy they can’t quit:\nCost of failing:\nFear / flaw:\nSurface vs inner:\nOne thing they hate:\nAlly / opponent:"],
+     ["3-act card","Normal life:\nInciting incident:\nFirst turning point (no way back):\nLowest point:\nClimax (soul question):\nEnd (action + meaning):"],
+     ["Domino test","Scene A -> (SO / BUT) -> Scene B -> (SO / BUT) -> Scene C\nWhat could the hero lose here?"],
+     ["Z-teaser","1) Who + where + situation:\n2) Unexpected turn:\n3) Another twist + a hook question:"]],
+ zh:[["一句话故事","【谁】想要【目标】，但是【障碍】，于是【行动】，最后【变化/结果】。"],
+     ["CLOSAT 卡片","类型：C / L / O / S / A / T\n我看到/听到的：\n为什么？->\n然后呢？->\n可能怎么用在故事里："],
+     ["主角卡","名字：\n想要（具体）：\n为什么不能放弃：\n失败的代价：\n恐惧/缺点：\n表面 vs 内在：\n他讨厌的一件事：\n伙伴/对手："],
+     ["三幕卡","平常生活：\n激励事件：\n第一情节点（无法回头）：\n最低点：\n高潮（灵魂拷问）：\n结尾（动作+意义）："],
+     ["多米诺测试","场景 A -> （于是/但是）-> 场景 B -> （于是/但是）-> 场景 C\n主角在这里可能失去什么？"],
+     ["Z 型导语","1）谁 + 在哪 + 什么处境：\n2）出乎意料的转折：\n3）再一次转折 + 一个钩子问题："]]
+};
+// ---- state
+let lang="en", tab="map", sel=0, done={};
+try{lang=localStorage.getItem("st-lang")||(navigator.language||"").startsWith("zh")?"zh":"en"}catch(e){}
+try{const l=localStorage.getItem("st-lang");if(l)lang=l;done=JSON.parse(localStorage.getItem("st-done")||"{}")}catch(e){}
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+function save(){try{localStorage.setItem("st-lang",lang);localStorage.setItem("st-done",JSON.stringify(done))}catch(e){}}
+function list(a){return "<ul>"+a.map(x=>"<li>"+esc(x)+"</li>").join("")+"</ul>"}
+function render(){
+  const u=UI[lang]; document.documentElement.lang=lang;
+  $("#h1").textContent=u.h1; $("#sub").textContent=u.sub;
+  document.querySelectorAll("[data-lang]").forEach(b=>b.classList.toggle("on",b.dataset.lang===lang));
+  $("#tabs").innerHTML=Object.keys(u.tabs).map(k=>`<button class="${k===tab?"on":""}" data-tab="${k}">${u.tabs[k]}</button>`).join("");
+  const n=Object.values(done).filter(Boolean).length; $("#pb").style.width=100*n/S.length+"%"; $("#pt").textContent=u.prog(n,S.length);
+  let h="";
+  if(tab==="map"){
+    h+=`<p class="small">${esc(u.mapIntro)}</p><div class="trail">`+S.map(s=>{const c=s[lang];return `<div class="st"><button class="node ${sel===s.id?"sel":""} ${done[s.id]?"done":""}" data-sel="${s.id}"><span class="n">${s.id}</span><b>${esc(c.t)}</b><span class="t">${esc(c.tag)}</span></button></div>`}).join("")+`</div>`;
+    const s=S[sel],c=s[lang];
+    h+=`<div class="card detail" id="detail"><h2>${s.id} · ${esc(c.t)}</h2><div class="small">${esc(c.tag)}</div>
+     <div class="row an"><b class="k">${u.k.an}</b>${esc(c.an)}</div>
+     <div class="row ru"><b class="k">${u.k.ru}</b>${list(c.ru)}</div>
+     <div class="row pj"><b class="k">${u.k.pj} <span class="spoil">· spoilers</span></b>${list(c.pj)}</div>
+     <div class="row tr"><b class="k">${u.k.tr}</b>${esc(c.tr)}</div>
+     <div class="row mi"><b class="k">${u.k.mi}</b>${esc(c.mi)}</div>
+     <div class="row"><b class="k">${u.k.ck}</b>${c.ck.map(x=>"☐ "+esc(x)).join("<br>")}</div>
+     <label class="chk"><input type="checkbox" id="dn" ${done[s.id]?"checked":""}> ${u.done}</label>
+     <p class="small">${esc(u.pjIntro)}</p></div>`;
+  } else if(tab==="pj"){
+    h+=`<div class="card"><h2>${u.pjTitle}</h2><p>${esc(u.pjLead)}</p><p class="spoil">Spoilers · 剧透</p>
+     <table><tr><th>${u.pjCols[0]}</th><th>${u.pjCols[1]}</th></tr>${PJ[lang].map((t,i)=>`<tr><td>${i} · ${esc(S[i][lang].t)}</td><td>${esc(t)}</td></tr>`).join("")}</table>
+     <p class="small">${esc(u.pjIntro)}</p></div>`;
+  } else if(tab==="score"){
+    h+=`<div class="card"><h2>${u.scoreTitle}</h2><p>${esc(u.scoreLead)}</p>
+     <div class="copyrow"><button id="cp">${u.copy}</button><button data-pl="en" class="${lang==="en"?"on":""}">Prompt EN</button><button data-pl="zh" class="${lang==="zh"?"on":""}">提示词 中文</button></div>
+     <pre id="pr">${esc(PROMPT[lang])}</pre>
+     <h3>${u.rubricTitle}</h3><table><tr><th>${u.rubCols[0]}</th><th>${u.rubCols[1]}</th><th>${u.rubCols[2]}</th></tr>${RUB.map(r=>`<tr><td>${esc(r[0])}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join("")}<tr><th>Total</th><th>100</th><th></th></tr></table>
+     <h3>Rules</h3>${list(u.rules)}</div>`;
+  } else {
+    h+=`<div class="card"><h2>${u.toolsTitle}</h2>`+TOOLS[lang].map((t,i)=>`<h3>${esc(t[0])}</h3><pre>${esc(t[1])}</pre><button data-tcopy="${i}">${u.copy}</button>`).join("")+`</div>`;
+  }
+  $("#main").innerHTML=h; $("#foot").textContent=u.foot;
+  document.querySelectorAll("[data-tab]").forEach(b=>b.onclick=()=>{tab=b.dataset.tab;render();scrollTo(0,0)});
+  document.querySelectorAll("[data-sel]").forEach(b=>b.onclick=()=>{sel=+b.dataset.sel;render();document.getElementById("detail").scrollIntoView({behavior:"smooth"})});
+  const dn=$("#dn"); if(dn)dn.onchange=()=>{done[sel]=dn.checked;save();render()};
+  const cp=$("#cp"); if(cp)cp.onclick=()=>copy(PROMPT[lang],cp);
+  document.querySelectorAll("[data-tcopy]").forEach(b=>b.onclick=()=>copy(TOOLS[lang][+b.dataset.tcopy][1],b));
+}
+function copy(t,btn){const o=btn.textContent;const ok=()=>{btn.textContent=UI[lang].copied;setTimeout(()=>btn.textContent=o,1500)};
+  if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t).then(ok,()=>fb(t,ok));else fb(t,ok)}
+function fb(t,ok){const a=document.createElement("textarea");a.value=t;document.body.appendChild(a);a.select();try{document.execCommand("copy");ok()}catch(e){}a.remove()}
+document.querySelectorAll("[data-lang]").forEach(b=>b.onclick=()=>{lang=b.dataset.lang;save();render()});
+$("#theme").onclick=()=>{const r=document.documentElement;const dark=getComputedStyle(r).getPropertyValue("--bg").trim()==="#17140f";r.dataset.theme=dark?"light":"dark"};
+render();
+</script>
+</body>
+</html>
